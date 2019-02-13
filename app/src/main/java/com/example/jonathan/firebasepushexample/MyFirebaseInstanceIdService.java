@@ -9,6 +9,19 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
   private static final String TAG = "FPE MyFirebaseInstanceIdService";
 
   @Override
+  public void onCreate() {
+    Log.d(TAG, "onCreate");
+
+    super.onCreate();
+
+    try {
+      FirebaseInstanceId.getInstance().deleteInstanceId();
+    } catch (Exception e) {
+      Log.e(TAG, "onCreate: Exception e=[" + e + "]");
+    }
+  }
+
+  @Override
   public void onTokenRefresh() {
     Log.d(TAG, "onTokenRefresh");
 
