@@ -12,6 +12,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
   private static final String TAG = " FPE MainActivity";
 
@@ -29,17 +31,17 @@ public class MainActivity extends AppCompatActivity {
           @Override
           public void onComplete(@NonNull Task<InstanceIdResult> task) {
             if (!task.isSuccessful()) {
-              Log.w(TAG, "getInstanceId failed", task.getException());
+              Log.w(TAG, "onComplete: getInstanceId failed. task.exception=[" +
+                  task.getException() +"]");
               return;
             }
 
             // Get new Instance ID token
-            String token = task.getResult().getToken();
+            String token = Objects.requireNonNull(task.getResult()).getToken();
 
             // Log and toast
-            //String msg = getString(R.string.msg_token_fmt, token);
-            String msg = token;
-            Log.v(TAG, "msg=[" + msg + "]");
+            String msg = getString(R.string.msg_token_fmt, token);
+            Log.v(TAG, "onComplete: msg=[" + msg + "]");
             Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
           }
         });
